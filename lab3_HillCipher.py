@@ -15,7 +15,11 @@ def text_to_matrix(text, size):
     return np.array(text_values).reshape(-1, size), padding
 
 def matrix_to_text(matrix):
-    return ''.join(chr((value % 26) + ord("A")) for row in matrix for value in row)
+    return ''.join(
+        chr((value % 26) + ord("A"))
+        for row in matrix
+        for value in row
+    )
 
 def hill_encrypt(key, plaintext):
     plaintext_matrix, _ = text_to_matrix(plaintext, len(key))

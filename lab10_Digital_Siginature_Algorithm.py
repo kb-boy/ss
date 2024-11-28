@@ -2,7 +2,7 @@ import hashlib
 import random
 from sympy import mod_inverse
 
-def key_generation(p, q):
+def key_generation(p, q, g):
     x = random.randint(1, q - 1)
     y = pow(g, x, p)
     return x, y
@@ -20,14 +20,14 @@ def verify_signature(M, r, s, p, q, g, y):
     w = mod_inverse(s, q)
     u1 = (H * w) % q
     u2 = (r * w) % q
-    v = (pow(g, u1, p) * pow(y, u2, p)) % p % q
+    v = ((pow(g, u1, p) * pow(y, u2, p)) % p) % q
     return v == r
 
 p = 23
 q = 11
 g = 2
 
-private_key, public_key = key_generation(p, q)
+private_key, public_key = key_generation(p, q, g)
 message = "Hello, this is a message to sign!"
 r, s = sign_message(message, p, q, g, private_key)
 is_valid = verify_signature(message, r, s, p, q, g, public_key)
